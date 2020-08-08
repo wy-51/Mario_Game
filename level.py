@@ -21,9 +21,9 @@ class Level:
         self.setup_bricks_and_boxes()
         self.setup_enemies()
         self.setup_checkpoints()
-        self.setup_coin()
 
     def setup_background(self):
+        self.name = 'background_items'
         self.BG = pygame.image.load('D:\\game\\Mario\\resources\\graphics\\level_1.png')
         w, h = self.BG.get_size()
         self.BG = pygame.transform.scale(self.BG, (int(w*c.BG_SCALE), int(h*c.BG_SCALE)))
@@ -97,11 +97,11 @@ class Level:
             check_point = stuff.Checkpoint(x, y, w, h, checkpoint_type, enemy_groupid)
             self.checkpoint_group.add(check_point)
 
-    def setup_coin(self):
-        self.coin_group = pygame.sprite.Group()
-        for coin_data in self.map_data['coin']:
-            x, y = coin_data['x'], coin_data['y']
-            self.coin_group.add(coin.Levelcoin(x, y))
+    # def setup_coin(self):
+    #     self.coin_group = pygame.sprite.Group()
+    #     for coin_data in self.map_data['coin']:
+    #         x, y = coin_data['x'], coin_data['y']
+    #         self.coin_group.add(coin.Levelcoin(x, y))
 
     def update(self, surface, keys):
         self.current_time = pygame.time.get_ticks()
@@ -120,7 +120,7 @@ class Level:
             self.box_group.update()
             self.enemy_group.update(self)
             self.dying_group.update(self)
-            self.coin_group.update()
+            # self.coin_group.update()
         self.draw(surface)
 
     def check_if_go_die(self):
@@ -153,10 +153,10 @@ class Level:
             # self.player.go_die()
             pass
 
-        coin = pygame.sprite.spritecollideany(self.player, self.coin_group)
-        if coin:
-            coin.kill()
-            self.game_info['coin'] += 1
+        # coin = pygame.sprite.spritecollideany(self.player, self.coin_group)
+        # if coin:
+        #     coin.kill()
+        #     self.game_info['coin'] += 1
 
     def check_y_collision(self):
         check_group = pygame.sprite.Group(self.ground_items_group, self.brick_group, self.box_group)
@@ -164,6 +164,7 @@ class Level:
 
         if ground_item:
             self.adjust_player_y(ground_item)
+            self.adjust_box_position(ground_item)
 
         enemy = pygame.sprite.spritecollideany(self.player, self.enemy_group)
         if enemy:
@@ -182,10 +183,10 @@ class Level:
 
         self.check_will_fall(self.player)
 
-        coin = pygame.sprite.spritecollideany(self.player, self.coin_group)
-        if coin:
-            coin.kill()
-            self.game_info['coin'] += 1
+        # coin = pygame.sprite.spritecollideany(self.player, self.coin_group)
+        # if coin:
+        #     coin.kill()
+        #     self.game_info['coin'] += 1
 
     def adjust_player_x(self, sprite):
         if self.player.rect.x < sprite.rect.x:
@@ -206,6 +207,13 @@ class Level:
             self.player.y_vel = 0
             self.player.rect.bottom = sprite.rect.top
             self.player.state = 'walk'
+
+    def adjust_box_position(self, group_sprite):
+        if group_sprite.name == 'box':
+            group_sprite.y_vel = -2
+            group_sprite.y_accel = 0.25
+            group_sprite.frame_index = 3
+
 
     def check_will_fall(self, sprite):
         sprite.rect.y += 1
@@ -228,7 +236,7 @@ class Level:
         self.box_group.draw(self.bg)
         self.enemy_group.draw(self.bg)
         self.dying_group.draw(self.bg)
-        self.coin_group.draw(self.bg)
+        # self.coin_group.draw(self.bg)
 
         surface.blit(self.bg, (0, 0),self.game_window)
 

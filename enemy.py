@@ -48,6 +48,7 @@ class Enemy(pygame.sprite.Sprite):
         self.update_position(level)
 
     def handle_states(self):
+
         if self.state == 'walk':
             self.walk()
 

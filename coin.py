@@ -33,12 +33,10 @@ class Flashingcoin(pygame.sprite.Sprite):
         self.image = self.frames[self.frame_index]  # 绘制
 
 
-class Levelcoin(Flashingcoin):
+class Jumpcoin(Flashingcoin):
     def __init__(self, x, y):
         Flashingcoin.__init__(self)
         self.x = x
         self.y = y
         self.rect.x = self.x
         self.rect.y = self.y
-
-

@@ -122,8 +122,12 @@ class Player(pygame.sprite.Sprite):
 
         if self.face_right:
             self.image = self.right_frames[self.frame_index]
+            rect = self.image.get_rect()
+            self.rect.w, self.rect.h = rect.w, rect.h
         else:
             self.image = self.left_frames[self.frame_index]
+            rect = self.image.get_rect()
+            self.rect.w, self.rect.h = rect.w, rect.h
 
     def can_jump_or_not(self,keys):
         if not keys[pygame.K_w]:

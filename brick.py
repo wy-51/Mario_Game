@@ -6,6 +6,7 @@ from.import constant as c
 class Brick(pygame.sprite.Sprite):
     def __init__(self, x, y, brick_type, color=None):
         pygame.sprite.Sprite.__init__(self)
+        self.name = 'brick'
         self.x = x
         self.y = y
         self.brick_type = brick_type
